@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phone List</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+<div class="container">
+    <h1>Phone List</h1>
+
+    <input type="text" id="search" placeholder="Search..." onkeyup="filterPhones()">
+
+    <table id="phoneTable">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>Price</th>
+            <th>Color</th>
+            <th>Display Size</th>
+            <th>Made In</th>
+            <th>Available</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for phone in phones %}
+            <tr data-id="{{ phone.id }}">
+                <td>{{ phone.id }}</td>
+                <td>{{ phone.brand.name }}</td>
+                <td>{{ phone.model }}</td>
+                <td>{{ phone.price }}</td>
+                <td>{{ phone.color }}</td>
+                <td>{{ phone.display_size }}</td>
+                <td>{{ phone.made_in }}</td>
+                <td>{{ phone.is_available }}</td>
+                <td>
+                    <button onclick="deletePhone({{ phone.id }})">Delete</button>
+                </td>
+            </tr>
+        {% endfor %}
+        
+        <tr id="add-phone-row">
+            <td></td>
+            <td><input type="text" id="new-brand" placeholder="Brand Name"></td>
+            <td><input type="text" id="new-model" placeholder="Model"></td>
+            <td><input type="number" id="new-price" placeholder="Price"></td>
+            <td><input type="text" id="new-color" placeholder="Color"></td>
+            <td><input type="number" id="new-display-size" placeholder="Display Size"></td>
+            <td><input type="text" id="new-made-in" placeholder="Made In"></td>
+            <td><input type="checkbox" id="new-is-available"></td>
+            <td>
+                <button onclick="saveNewPhone()">Save</button>
+            </td>
+        </tr>
+
+
+        </tbody>
+    </table>
+
+    <button onclick="exportData('json')">Export as JSON</button>
+    <button onclick="exportData('excel')">Export as Excel</button>
+
+</div>
+
+<script src="{% static 'js/scripts.js' %}"></script>
+</body>
+</html>
