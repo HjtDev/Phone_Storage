@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
-from django.db.models import Q
+from django.db.models import Q, F
 from .models import Phone
 import pandas as pd
 from django.core.serializers import serialize
@@ -104,3 +104,14 @@ def export_to_excel(request):
     df.to_excel(response, index=False)
 
     return response
+
+
+def reports(request):
+    korean_brands = Brand.objects.filter(country='Korea')
+    phones_made_in_manufacturer_country = Phone.objects.filter(made_in=F('brand__country'))
+    context = {
+        'kb': korean_brands,
+        'pmimc': phones_made_in_manufacturer_country,
+    }
+    return render(request, 'reports.html', context)
+
